@@ -30,6 +30,7 @@ public class authController {
 
     @PostMapping
     public ResponseEntity<String> validateToken(@RequestBody String tokenToValidate){
-        return userService.validateToken(tokenToValidate);
+        String serviceResponse= userService.validateToken(tokenToValidate);
+        return new ResponseEntity<>(serviceResponse,HttpStatus.OK);
     }
 }
