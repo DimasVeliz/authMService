@@ -44,7 +44,24 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public AuthServiceResponseDto loginUser(LoginDto loginDto) {
-        return null;
+
+        var savedUser = userRepository.findByEmail(loginDto.getEmail())
+                .orElse(null);
+
+        var matchesPassword = passwordEncoder.matches(loginDto.getPassword(), savedUser.getPassword());
+        if (!matchesPassword)
+            return null;
+
+        var jwtToken = jwtService.generateToken(savedUser);
+
+        var refreshToken = jwtService.generateRefreshToken(savedUser);
+
+        return AuthServiceResponseDto.builder()
+                .userDto(UserDto.builder().email(savedUser.getEmail()).username(savedUser.getUserName()).build()
+                )
+                .refreshToken(refreshToken)
+                .token(jwtToken)
+                .build();
     }
 
     @Override

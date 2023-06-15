@@ -19,13 +19,13 @@ public class authController {
     @PostMapping
     public ResponseEntity<AuthServiceResponseDto> createUser(@RequestBody RegistrationDto registrationDto){
         AuthServiceResponseDto serviceResponse = userService.createUser(registrationDto);
-        return new ResponseEntity<>(serviceResponse,HttpStatus.OK);
+        return serviceResponse!=null?new ResponseEntity<>(serviceResponse,HttpStatus.OK): new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping
     public ResponseEntity<AuthServiceResponseDto> loginUser(@RequestBody LoginDto loginDto){
         AuthServiceResponseDto serviceResponse = userService.loginUser(loginDto);
-        return new ResponseEntity<>(serviceResponse,HttpStatus.OK);
+        return serviceResponse!=null?new ResponseEntity<>(serviceResponse,HttpStatus.OK): new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping
